@@ -121,15 +121,20 @@ export default class SwipeALot extends Component {
       emitter: PropTypes.object,
       autoplay: PropTypes.object,
       onSetActivePage: PropTypes.func,
+      showDot: PropTypes.bool
     }
+  }
+
+  static get defaultProps() {
+    showDot: true
   }
 
   render() {
     return (
-      <View style={[this.props.wrapperStyle, {flex: 1}]} onLayout={() => {
-          const page = this.getPage()
-          this.swipeToPage(page)
-        }}>
+      <View style={[this.props.wrapperStyle, { flex: 1 }]} onLayout={() => {
+        const page = this.getPage()
+        this.swipeToPage(page)
+      }}>
         {(() => {
           if (Platform.OS === 'ios') {
             return (
@@ -147,7 +152,7 @@ export default class SwipeALot extends Component {
                   this.swipeToPage(page)
                 }}
                 onLayout={(event) => {
-                  const {x, y, width, height} = event.nativeEvent.layout
+                  const { x, y, width, height } = event.nativeEvent.layout
                   this.store.dispatch({
                     type: 'SET_DIMS',
                     width,
@@ -179,12 +184,17 @@ export default class SwipeALot extends Component {
             )
           }
         })()}
-        <Circles store={this.store} emitter={this.emitter}
-          circleWrapperStyle={this.props.circleWrapperStyle}
-          circleDefaultStyle={this.props.circleDefaultStyle}
-          circleActiveStyle={this.props.circleActiveStyle}>
-          {this.props.children}
-        </Circles>
+
+        {
+          this.props.showDot && (
+            <Circles store={this.store} emitter={this.emitter}
+              circleWrapperStyle={this.props.circleWrapperStyle}
+              circleDefaultStyle={this.props.circleDefaultStyle}
+              circleActiveStyle={this.props.circleActiveStyle}>
+              {this.props.children}
+            </Circles>
+          )
+        }
       </View>
     )
   }
