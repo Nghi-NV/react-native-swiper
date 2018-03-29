@@ -190,6 +190,7 @@ export default class SwipeALot extends Component {
             <Circles store={this.store} emitter={this.emitter}
               circleWrapperStyle={this.props.circleWrapperStyle}
               circleDefaultStyle={this.props.circleDefaultStyle}
+              showShortDot={this.props.showShortDot}
               circleActiveStyle={this.props.circleActiveStyle}>
               {this.props.children}
             </Circles>
