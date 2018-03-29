@@ -50,6 +50,33 @@ class Circles extends Component {
 
   render() {
     const selectedPage = this.props.store.getState().page
+    const lengChildren = this.props.children.length
+
+    if (this.props.showShortDot && lengChildren > 3) {
+      return (
+        <View style={[styles.circleWrapper, this.props.circleWrapperStyle]} pointerEvents='box-none'>
+          {React.Children.map(this.props.children, (c, i) => {
+            if (i > 2) return null
+            return (
+              <TouchableWithoutFeedback key={`circle${i}`} onPress={() => {
+                this.props.emitter.emit('swipeToPage', {
+                  page: i
+                })
+              }}>
+                <View>
+                  <View
+                    style={[styles.circleDefault,
+                    this.props.circleDefaultStyle,
+                    ((i === selectedPage && selectedPage == 0) || (i == 2 && selectedPage == lengChildren - 1) || (i == 1 && selectedPage > 0 && selectedPage < lengChildren - 1)) && styles.circleActive,
+                    i === selectedPage && this.props.circleActiveStyle]}>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            )
+          })}
+        </View>
+      )
+    }
 
     return (
       <View style={[styles.circleWrapper, this.props.circleWrapperStyle]} pointerEvents='box-none'>
