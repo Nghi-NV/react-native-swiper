@@ -4,6 +4,8 @@ import ReactNative, {
   Platform,
   ScrollView,
   View,
+  Text,
+  ViewPropTypes,
   ViewPagerAndroid
 } from 'react-native'
 
@@ -121,12 +123,18 @@ export default class SwipeALot extends Component {
       emitter: PropTypes.object,
       autoplay: PropTypes.object,
       onSetActivePage: PropTypes.func,
-      showDot: PropTypes.bool
+      showDot: PropTypes.bool,
+      showIndicator: PropTypes.bool,
+      IndicatorStyle: ViewPropTypes.style,
+      textIndicatorStyle: Text.propTypes.style
     }
   }
 
   static get defaultProps() {
-    showDot: true
+    return {
+      showDot: true,
+      showIndicator: false
+    }
   }
 
   render() {
@@ -184,6 +192,23 @@ export default class SwipeALot extends Component {
             )
           }
         })()}
+
+        {
+          this.props.showIndicator && (this.props.children.length > 1) && (
+            <View 
+              pointerEvents='none' 
+              style={[{ 
+                position: 'absolute', top: 0, left: 0, right: 0, 
+                height: 44, marginTop: 20, 
+                justifyContent: 'center', alignItems: 'center' 
+              }, this.props.IndicatorStyle]}
+            >
+              <Text style={[{ fontSize: 18, color: 'white' }, this.props.textIndicatorStyle]} >
+                {`${this.store.getState().page + 1}/${this.props.children.length}`}
+              </Text>
+            </View>
+          )
+        }
 
         {
           this.props.showDot && (
